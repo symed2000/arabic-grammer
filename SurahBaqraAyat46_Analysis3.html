@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Arabic Syntax Nesting Tree</title>
+    <style>
+        body {
+            background-color: #FAF8F5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        svg {
+            width: 100%;
+            max-width: 950px;
+            height: auto;
+        }
+
+        /* Text Settings */
+        .word-text {
+            font-size: 34px;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+        .label-text {
+            font-size: 13px;
+            text-anchor: middle;
+            fill: #555;
+        }
+        .structural-label {
+            font-size: 15px;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+
+        /* Dynamic Connecting Arcs & Arrows */
+        marker {
+            fill: context-stroke;
+        }
+        .animated-link {
+            fill: none;
+            stroke-dasharray: 1200;
+            stroke-dashoffset: 1200;
+            animation: drawLine 2s ease-in-out forwards;
+        }
+
+        /* Horizontal Combining Baselines */
+        .base-line {
+            stroke-width: 3.5;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 1.5s ease-out forwards;
+        }
+
+        /* Keyframes */
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* --- RIGHT-TO-LEFT NESTED TIMING SEQUENCE (5s intervals) --- */
+        .step-1 { animation-delay: 0s; }   /* Conjunction (Ma'toof) */
+        .step-2 { animation-delay: 5s; }   /* Sillah Baseline + Arc for Allazina */
+        .step-3 { animation-delay: 10s; }  /* Sifah Combine Baseline */
+        .step-4 { animation-delay: 15s; }  /* Master Description Arc to Al-Khashi'een */
+    </style>
+</head>
+<body>
+
+<svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" />
+        </marker>
+    </defs>
+
+    <!-- WORD TEXTS (Organized from Right to Left) -->
+    <text x="880" y="90" class="word-text" fill="#8E44AD">الْخَاشِعِينَ</text>
+    <text x="680" y="90" class="word-text" fill="#D4AC0D">الَّذِينَ</text>
+    <text x="480" y="90" class="word-text" fill="#2E6DA4">يَظُنُّونَ...</text>
+    <text x="230" y="90" class="word-text" fill="#0D0958">وَأَنَّهُمْ...</text>
+
+    <!-- INITIAL CLASSIFICATION LABELS -->
+    <text x="880" y="125" class="label-text">اسم</text>
+    <text x="680" y="125" class="label-text">اسم موصول</text>
+    <text x="480" y="125" class="label-text">معطوف عليه</text>
+    <text x="230" y="125" class="label-text">معطوف</text>
+
+
+    <!-- STEP 1: Conjunction Layer (0s to 5s) -->
+    <!-- Connects Matoof to Matoof Alayh -->
+    <path class="animated-link step-1" d="M 230,140 Q 355,240 480,140" stroke="#7D3C98" stroke-width="2.5" marker-end="url(#arrow)" />
+    <text x="355" y="210" class="structural-label" fill="#7D3C98" style="opacity: 0; animation: fadeIn 0.5s 1.5s forwards;">عطف / معطوف</text>
+
+
+    <!-- STEP 2: The Sillah Combine (5s to 10s) -->
+    <!-- Baseline combining the phrases below to form a unified Sillah -->
+    <line x1="530" y1="260" x2="180" y2="260" stroke="#D4AC0D" class="base-line step-2" />
+    <circle cx="355" cy="275" r="4" fill="#D4AC0D" style="opacity: 0; animation: fadeIn 0.5s 6s forwards;" />
+    <text x="355" y="300" class="structural-label" fill="#D4AC0D" style="opacity: 0; animation: fadeIn 0.5s 6.2s forwards;">جملة الصلة (صلة الموصول)</text>
+    
+    <!-- Golden Arc running from the Sillah block up to the Relative Pronoun (الَّذِينَ) -->
+    <path class="animated-link step-2" d="M 355,315 Q 510,400 680,140" stroke="#D4AC0D" stroke-width="2.5" marker-end="url(#arrow)" />
+
+
+    <!-- STEP 3: The Big Sifah Structural Combine (10s to 15s) -->
+    <!-- Draws a master baseline showing Allazina + its Sillah are now ONE package -->
+    <line x1="720" y1="420" x2="300" y2="420" stroke="#8E44AD" class="base-line step-3" />
+    <circle cx="510" cy="435" r="5" fill="#8E44AD" style="opacity: 0; animation: fadeIn 0.5s 11s forwards;" />
+    <text x="510" y="465" class="structural-label" fill="#8E44AD" style="opacity: 0; animation: fadeIn 0.5s 11.5s forwards; font-size: 16px;">المركب الموصولي کاملًا</text>
+
+
+    <!-- STEP 4: Master Description Sweep (15s+) -->
+    <!-- The complete package sweeps right to form the Sifah for Al-Khashi'een -->
+    <path class="animated-link step-4" d="M 510,480 Q 700,560 880,140" stroke="#8E44AD" stroke-width="3" marker-end="url(#arrow)" />
+    <text x="710" y="540" class="structural-label" fill="#8E44AD" style="opacity: 0; animation: fadeIn 0.5s 16.5s forwards; font-size: 18px;">← صفة لـ (الْخَاشِعِينَ)</text>
+
+</svg>
+
+</body>
+</html>
+

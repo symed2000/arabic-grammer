@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Arabic Grammar Tree - Right to Left Sequence</title>
+    <style>
+        body {
+            background-color: #FAF8F5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        svg {
+            width: 100%;
+            max-width: 850px;
+            height: auto;
+        }
+
+        /* Text settings */
+        .word-text {
+            font-size: 34px;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+        .label-text {
+            font-size: 13px;
+            text-anchor: middle;
+            fill: #555;
+        }
+        .structural-label {
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+        }
+
+        /* Connecting Arcs & Arrows */
+        marker {
+            fill: context-stroke;
+        }
+        .animated-link {
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s ease-in-out forwards;
+        }
+
+        /* Horizontal Baselines */
+        .base-line {
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 1.2s ease-out forwards;
+        }
+
+        /* Keyframes */
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* --- RIGHT-TO-LEFT TIMING SEQUENCE (5s intervals) --- */
+        .step-1 { animation-delay: 0s; }   /* معطوف Link */
+        .step-2 { animation-delay: 5s; }   /* اسم أنّ Sub-branch */
+        .step-3 { animation-delay: 10s; }  /* جار ومجرور Baseline & Nodes */
+        .step-4 { animation-delay: 15s; }  /* متعلّق Arc */
+        .step-5 { animation-delay: 20s; }  /* خبر أنّ Final Sweep */
+    </style>
+</head>
+<body>
+
+<svg viewBox="0 0 850 550" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" />
+        </marker>
+    </defs>
+
+    <!-- WORD TEXTS (Positioned exactly as in 1781666752596.jpeg) -->
+    <text x="750" y="90" class="word-text" fill="#AAA">(أَنَّهُمْ)</text>
+    <text x="500" y="90" class="word-text" fill="#0D0958">وَأَنَّهُمْ</text>
+    <text x="270" y="90" class="word-text" fill="#A94442">إِلَيْهِ</text>
+    <text x="100" y="90" class="word-text" fill="#5DADE2">رَاجِعُونَ</text>
+
+    <!-- POS BASE LABELS -->
+    <text x="770" y="125" class="label-text">حرف نصب</text>
+    <text x="720" y="125" class="label-text">ضمير</text>
+    
+    <text x="560" y="125" class="label-text">حرف عطف</text>
+    <text x="500" y="125" class="label-text">حرف نصب</text>
+    <text x="440" y="125" class="label-text">ضمير</text>
+    
+    <text x="290" y="125" class="label-text">حرف جرّ</text>
+    <text x="230" y="125" class="label-text">ضمير</text>
+    
+    <text x="100" y="125" class="label-text">اسم</text>
+
+
+    <!-- STEP 1: Far Right Conjunction Link (0s) -->
+    <path class="animated-link step-1" d="M 750,140 Q 625,320 500,140" stroke="#7D3C98" stroke-width="2.5" marker-end="url(#arrow)" />
+    <text x="625" y="250" class="structural-label" fill="#7D3C98" style="opacity: 0; animation: fadeIn 0.5s 1.5s forwards;">معطوف</text>
+
+
+    <!-- STEP 2: Main Pronoun Branch (5s) -->
+    <path class="animated-link step-2" d="M 440,140 Q 440,210 500,210" stroke="#3498DB" stroke-width="2" marker-end="url(#arrow)" />
+    <text x="460" y="235" class="label-text" style="opacity: 0; animation: fadeIn 0.5s 6.5s forwards;">اسم «أنّ»</text>
+    
+    <!-- Matching dimmed background link on the phantom word -->
+    <path class="animated-link step-2" d="M 720,140 Q 720,210 770,210" stroke="#AED6F1" stroke-width="1.5" marker-end="url(#arrow)" />
+    <text x="745" y="235" class="label-text" style="opacity: 0; animation: fadeIn 0.5s 6.5s forwards; fill: #999;">اسم «أنّ»</text>
+
+
+    <!-- STEP 3: Preposition Breakdown Group (10s) -->
+    <path class="animated-link step-3" d="M 290,140 Q 260,210 230,140" stroke="#A94442" stroke-width="2" marker-end="url(#arrow)" />
+    <text x="260" y="195" class="label-text" style="opacity: 0; animation: fadeIn 0.5s 11.2s forwards; fill: #A94442;">مجرور</text>
+    
+    <!-- Horizontal Divider Line -->
+    <line x1="290" y1="230" x2="230" y2="230" stroke="#A94442" class="base-line step-3" />
+    <circle cx="260" cy="245" r="4" fill="#A94442" style="opacity: 0; animation: fadeIn 0.5s 11s forwards;" />
+    <text x="260" y="270" class="structural-label" fill="#A94442" style="opacity: 0; animation: fadeIn 0.5s 11.5s forwards;">جارّ وَمَجْرُور</text>
+
+
+    <!-- STEP 4: Golden Attachment Arc (15s) -->
+    <path class="animated-link step-4" d="M 260,285 Q 260,370 170,360" stroke="#D4AC0D" stroke-width="2.5" marker-end="url(#arrow)" />
+    <text x="180" y="385" class="label-text" style="opacity: 0; animation: fadeIn 0.5s 16.5s forwards; fill: #D4AC0D; font-weight: bold;">متعلّق</text>
+
+
+    <!-- STEP 5: Final Deep Gray Sweep (20s) -->
+    <path class="animated-link step-5" d="M 100,140 Q 100,450 500,420" stroke="#566573" stroke-width="2.5" marker-end="url(#arrow)" />
+    <text x="300" y="465" class="structural-label" fill="#566573" style="opacity: 0; animation: fadeIn 0.5s 21.5s forwards;">خبر «أنّ»</text>
+
+</svg>
+
+</body>
+</html>
+
